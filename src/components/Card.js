@@ -1,16 +1,15 @@
-function Cards(props) {
-
+function Cards({ titleCard, linkCard, likeCard, card, onCardClick }) {
   const handleCardClick = () => {
-    props.onCardClick(props.card);
+    onCardClick(card);
   };
 
   return (
     <li className="element">
       <img
         className="element__image"
-        src={props.linkCard}
-        alt={props.titleCard}
-        onClick={handleCardClick} 
+        src={linkCard}
+        alt={titleCard}
+        onClick={handleCardClick}
       />
       <button
         className="element__trash-btn button"
@@ -18,14 +17,14 @@ function Cards(props) {
         type="button"
       ></button>
       <div className="element__info">
-        <h2 className="element__title">{props.titleCard}</h2>
+        <h2 className="element__title">{titleCard}</h2>
         <div className="element__like-container">
           <button
             className="element__like button"
             type="button"
             aria-label="Нравится"
           ></button>
-          <span className="element__like-quantity">{props.likeCard}</span>
+          <span className="element__like-quantity">{likeCard}</span>
         </div>
       </div>
     </li>

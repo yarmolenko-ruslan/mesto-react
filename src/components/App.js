@@ -22,7 +22,7 @@ function App() {
     });
 
     api.getInitialCards().then((result) => {
-      setCards(result)
+      setCards(result);
     });
   }, []);
 
@@ -56,10 +56,7 @@ function App() {
         onEditAvatar={handleEditAvatarClick}
         isEditAvatarPopupOpen={isEditPopupAvatar}
         onEditProfile={handleEditProfileClick}
-        isOpen={isEditPopupProfile}
         onAddPlace={handleAddPlaceClick}
-        isOpen={isEditPopupAddPlace}
-        isClose={closeAllPopups}
         profileInfo={profileInfo}
         cards={cards}
         onCardClick={handleCardClick}

@@ -1,47 +1,51 @@
 import Card from "./Card";
 
-function Main(props) {
-
+function Main({
+  onEditAvatar,
+  onEditProfile,
+  onAddPlace,
+  profileInfo,
+  cards,
+  onCardClick,
+}) {
   return (
     <main className="content">
       <section className="profile">
         <img
-          src={props.profileInfo.avatar}
+          src={profileInfo.avatar}
           alt="Фотография пользователя"
           className="profile__avatar"
         />
-        <div className="profile__cover" onClick={props.onEditAvatar}></div>
+        <div className="profile__cover" onClick={onEditAvatar}></div>
         <div className="profile__info">
-          <h1 className="profile__info-title">{props.profileInfo.name}</h1>
-          <p className="profile__info-subtitle">{props.profileInfo.about}</p>
+          <h1 className="profile__info-title">{profileInfo.name}</h1>
+          <p className="profile__info-subtitle">{profileInfo.about}</p>
           <button
             className="profile__info-button button"
             aria-label="Редактировать имя и информацию о себе"
             type="button"
-            onClick={props.onEditProfile}
+            onClick={onEditProfile}
           ></button>
         </div>
         <button
           className="profile__button button"
           aria-label="Добавить новую карточку места"
           type="button"
-          onClick={props.onAddPlace}
+          onClick={onAddPlace}
         ></button>
       </section>
 
       <section className="elements">
         <ul className="elements__list">
-          {props.cards.map((card) => {
-
+          {cards.map((card) => {
             return (
               <Card
                 titleCard={card.name}
                 linkCard={card.link}
-                idCard={card._id}
                 likeCard={card.likes.length}
                 key={card._id}
                 card={card}
-                onCardClick={props.onCardClick}
+                onCardClick={onCardClick}
               />
             );
           })}

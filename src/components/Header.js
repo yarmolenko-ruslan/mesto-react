@@ -1,7 +1,11 @@
 function Header(props) {
-  return(
+  return (
     <header className="header">
-      <a href={props.logo} alt="Логотип проекта Mesto" className="logo link"></a>
+      <a
+        href={props.logo}
+        alt="Логотип проекта Mesto"
+        className="logo link"
+      ></a>
     </header>
   );
 }
