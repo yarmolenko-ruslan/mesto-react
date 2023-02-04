@@ -1,4 +1,4 @@
-function Cards({ titleCard, linkCard, likeCard, card, onCardClick }) {
+function Card({ titleCard, linkCard, likeCard, card, onCardClick }) {
   const handleCardClick = () => {
     onCardClick(card);
   };
@@ -31,4 +31,4 @@ function Cards({ titleCard, linkCard, likeCard, card, onCardClick }) {
   );
 }
 
-export default Cards;
+export default Card;
