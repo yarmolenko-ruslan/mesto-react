@@ -6,7 +6,7 @@ function Main({
   onAddPlace,
   profileInfo,
   cards,
-  onCardClick,
+  onCardClick
 }) {
   return (
     <main className="content">
@@ -39,14 +39,7 @@ function Main({
         <ul className="elements__list">
           {cards.map((card) => {
             return (
-              <Card
-                titleCard={card.name}
-                linkCard={card.link}
-                likeCard={card.likes.length}
-                key={card._id}
-                card={card}
-                onCardClick={onCardClick}
-              />
+              <Card key={card._id} card={card} onCardClick={onCardClick} />
             );
           })}
         </ul>

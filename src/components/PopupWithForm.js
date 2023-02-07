@@ -1,22 +1,26 @@
-function PopupWithForm({ name, title, children, isOpen, isClose }) {
+function PopupWithForm({ name, title, button, isOpen, onClose, children }) {
+  console.log(isOpen);
   return (
-    <div className={`popup popup_type_${name} ${isOpen && "popup_opened"}`}>
-      <div className="popup__container">
-        <h2 className="popup__title">{title}</h2>
+    <div
+      className={`popup ${isOpen && "popup_opened"} popup_${name}`}
+      onClick={onClose}
+    >
+      <div className={`popup__container popup__container_${name}`}>
+        <h2 className={`popup__title popup__title_${name}`}>{title}</h2>
         <button
-          className="popup__close button"
+          className={`popup__close button popup__close_${name}`}
           aria-label="Закрыть"
           type="button"
-          onClick={isClose}
+          onClick={onClose}
         ></button>
-        <form className="popup__form" name={`${name}`} novalidate>
+        <form className={`popup__form form_${name}`} name={name} novalidate>
           {children}
           <button
-            className="popup__button button"
-            aria-label="Сохранить"
+            className={`popup__button button popup__button_${name}`}
+            aria-label={button}
             type="submit"
           >
-            Сохранить
+            {button}
           </button>
         </form>
       </div>

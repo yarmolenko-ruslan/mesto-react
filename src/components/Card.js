@@ -1,30 +1,29 @@
-function Card({ titleCard, linkCard, likeCard, card, onCardClick }) {
+function Card({ card, onCardClick }) {
   const handleCardClick = () => {
     onCardClick(card);
   };
-
   return (
     <li className="element">
-      <img
-        className="element__image"
-        src={linkCard}
-        alt={titleCard}
-        onClick={handleCardClick}
-      />
       <button
         className="element__trash-btn button"
         aria-label="Удалить карточку"
         type="button"
       ></button>
+      <img
+        className="element__image"
+        src={card.link}
+        alt={card.name}
+        onClick={handleCardClick}
+      />
       <div className="element__info">
-        <h2 className="element__title">{titleCard}</h2>
+        <h2 className="element__title">{card.name}</h2>
         <div className="element__like-container">
           <button
             className="element__like button"
             type="button"
             aria-label="Нравится"
           ></button>
-          <span className="element__like-quantity">{likeCard}</span>
+          <span className="element__like-quantity">{card.likes.length}</span>
         </div>
       </div>
     </li>
