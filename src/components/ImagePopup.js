@@ -1,8 +1,4 @@
 function ImagePopup({ card, onClose }) {
-  
-  const name = card ? card.name : null;
-  const link = card ? card.link : null;
-
   return (
     <div
       className={`popup popup-image ${card && "popup_opened"}`}
@@ -10,8 +6,8 @@ function ImagePopup({ card, onClose }) {
     >
       <div className="popup-image__container">
         <button className="popup__close button" onClick={onClose}></button>
-        <img className="popup-image__img" src={link} alt={name} />
-        <p className="popup-image__title">{name}</p>
+        <img className="popup-image__img" src={card?.link} alt={card?.name} />
+        <p className="popup-image__title">{card?.name}</p>
       </div>
     </div>
   );

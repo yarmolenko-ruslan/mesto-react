@@ -1,25 +1,30 @@
 import Card from "./Card";
+import { CurrentUserContext } from "../context/CurrentUserContext.js";
+import React from "react";
 
 function Main({
   onEditAvatar,
   onEditProfile,
   onAddPlace,
-  profileInfo,
   cards,
-  onCardClick
+  onCardClick,
+  onCardLike,
+  onCardDelete,
 }) {
+  const currentUser = React.useContext(CurrentUserContext);
+
   return (
     <main className="content">
       <section className="profile">
         <img
-          src={profileInfo.avatar}
+          src={currentUser.avatar}
           alt="Фотография пользователя"
           className="profile__avatar"
         />
         <div className="profile__cover" onClick={onEditAvatar}></div>
         <div className="profile__info">
-          <h1 className="profile__info-title">{profileInfo.name}</h1>
-          <p className="profile__info-subtitle">{profileInfo.about}</p>
+          <h1 className="profile__info-title">{currentUser.name}</h1>
+          <p className="profile__info-subtitle">{currentUser.about}</p>
           <button
             className="profile__info-button button"
             aria-label="Редактировать имя и информацию о себе"
@@ -39,7 +44,13 @@ function Main({
         <ul className="elements__list">
           {cards.map((card) => {
             return (
-              <Card key={card._id} card={card} onCardClick={onCardClick} />
+              <Card
+                key={card._id}
+                card={card}
+                onCardClick={onCardClick}
+                onCardLike={onCardLike}
+                onCardDelete={onCardDelete}
+              />
             );
           })}
         </ul>
