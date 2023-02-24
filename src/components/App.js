@@ -1,23 +1,21 @@
 import Header from "./Header";
 import Main from "./Main";
-import PopupWithForm from "./PopupWithForm";
 import Footer from "./Footer";
 import ImagePopup from "./ImagePopup";
-import { useState, useEffect } from "react";
-import api from "../utils/Api";
-import { CurrentUserContext } from "../context/CurrentUserContext.js";
 import EditProfilePopup from "./EditProfilePopup";
 import EditAvatarPopup from "./EditAvatarPopup";
+import AddPlacePopup from "./AddPlacePopup";
+import api from "../utils/Api";
+import { useState, useEffect } from "react";
+import { CurrentUserContext } from "../context/CurrentUserContext.js";
 
 function App() {
+  const [cards, setCards] = useState([]);
+  const [currentUser, setCurrentUser] = useState([]);
+  const [selectedCard, setSelectedCard] = useState(null);
   const [isEditPopupAvatar, setEditPopupAvatar] = useState(false);
   const [isEditPopupProfile, setEditPopupProfile] = useState(false);
   const [isEditPopupAddPlace, setEditPopupAddPlace] = useState(false);
-
-  const [cards, setCards] = useState([]);
-  const [selectedCard, setSelectedCard] = useState(null);
-
-  const [currentUser, setCurrentUser] = useState([]);
 
   useEffect(() => {
     document.title = "Project Mesto-React";
@@ -112,11 +110,19 @@ function App() {
       .catch((err) => console.error(err));
   }
 
+  function handleUpdateCard({ name, link }) {
+    api
+      .postCard({ name: name, link: link })
+      .then((newCard) => {
+        setCards([newCard, ...cards]);
+      })
+      .catch((err) => console.error(err));
+  }
+
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page">
         <Header />
-
         <Main
           onEditAvatar={handleEditAvatarClick}
           onEditProfile={handleEditProfileClick}
@@ -126,75 +132,23 @@ function App() {
           onCardLike={handleCardLike}
           onCardDelete={handleCardDelete}
         />
-
         <Footer />
-
         <EditProfilePopup
           isOpen={isEditPopupProfile}
           onClose={closeAllPopups}
           onUpdateUser={handleUpdateUser}
         />
-
         <EditAvatarPopup
           isOpen={isEditPopupAvatar}
           onClose={closeAllPopups}
           onUpdateAvatar={handleUpdateAvatar}
         />
-
-        <PopupWithForm
-          name="card"
-          title="Новое место"
-          button="Создать"
+        <AddPlacePopup
           isOpen={isEditPopupAddPlace}
           onClose={closeAllPopups}
-        >
-          <input
-            className="popup__input popup__input_place_top"
-            id="input-name"
-            name="cardName"
-            minLength={2}
-            maxLength={30}
-            placeholder="Название"
-            type="text"
-            required
-          />
-          <span
-            className="popup__input-error input-title-error"
-            id="cardNameError"
-          ></span>
-          <input
-            className="popup__input popup__input_place_bottom"
-            id="input-link"
-            name="cardLink"
-            placeholder="Ссылка на картинку"
-            type="url"
-            required
-          />
-          <span
-            className="popup__input-error input-link-error"
-            id="cardLinkError"
-          ></span>
-        </PopupWithForm>
-
+          onUpdateCard={handleUpdateCard}
+        />
         <ImagePopup card={selectedCard} onClose={closeAllPopups} />
-
-        <div className="popup popup-confirmation">
-          <div className="popup__container">
-            <h2 className="popup__title popup__title-delete">Вы уверены?</h2>
-            <button
-              className="popup__close button"
-              aria-label="Закрыть"
-              type="button"
-            ></button>
-            <button
-              className="popup__button button popup__button-delete"
-              aria-label="Да"
-              type="submit"
-            >
-              Да
-            </button>
-          </div>
-        </div>
       </div>
     </CurrentUserContext.Provider>
   );

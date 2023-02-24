@@ -4,16 +4,16 @@ import { useState } from "react";
 import { CurrentUserContext } from "../context/CurrentUserContext.js";
 
 function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
+  const currentUser = React.useContext(CurrentUserContext);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
-  const currentUser = React.useContext(CurrentUserContext);
 
-  function hendleChangeName(e) {
-    setName(e.target.value);
+  function hendleChangeName(event) {
+    setName(event.target.value);
   }
 
-  function handleChangeDescription(e) {
-    setDescription(e.target.value);
+  function handleChangeDescription(event) {
+    setDescription(event.target.value);
   }
 
   React.useEffect(() => {
@@ -21,11 +21,11 @@ function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
     setDescription(currentUser.about);
   }, [currentUser]);
 
-  function handleSubmit(el) {
-    el.preventDefault();
+  function handleSubmit(event) {
+    event.preventDefault();
 
     onUpdateUser({
-      name,
+      name: name,
       about: description,
     });
 

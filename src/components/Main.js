@@ -1,6 +1,6 @@
+import React from "react";
 import Card from "./Card";
 import { CurrentUserContext } from "../context/CurrentUserContext.js";
-import React from "react";
 
 function Main({
   onEditAvatar,
@@ -12,6 +12,18 @@ function Main({
   onCardDelete,
 }) {
   const currentUser = React.useContext(CurrentUserContext);
+
+  const renderCard = (card) => {
+    return (
+      <Card
+        key={card._id}
+        card={card}
+        onCardClick={onCardClick}
+        onCardLike={onCardLike}
+        onCardDelete={onCardDelete}
+      />
+    );
+  };
 
   return (
     <main className="content">
@@ -41,19 +53,7 @@ function Main({
       </section>
 
       <section className="elements">
-        <ul className="elements__list">
-          {cards.map((card) => {
-            return (
-              <Card
-                key={card._id}
-                card={card}
-                onCardClick={onCardClick}
-                onCardLike={onCardLike}
-                onCardDelete={onCardDelete}
-              />
-            );
-          })}
-        </ul>
+        <ul className="elements__list">{cards.map(renderCard)}</ul>
       </section>
     </main>
   );
