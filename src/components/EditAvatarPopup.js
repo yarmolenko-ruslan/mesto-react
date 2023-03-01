@@ -1,7 +1,7 @@
 import React from "react";
 import PopupWithForm from "./PopupWithForm";
 
-function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar }) {
+function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar, propagation }) {
   const avatarRef = React.useRef();
 
   React.useEffect(() => {
@@ -14,18 +14,17 @@ function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar }) {
     onUpdateAvatar({
       avatar: avatarRef.current.value,
     });
-
-    onClose();
   }
 
   return (
     <PopupWithForm
       name="avatar"
       title="Обновить аватар"
-      button="Сохранить"
+      buttonText="Сохранить"
       isOpen={isOpen}
       onClose={onClose}
       onSubmit={handleSubmit}
+      propagation={propagation}
     >
       <input
         className="popup__input popup__input_place_bottom popup__input-change"

@@ -42,16 +42,15 @@ function Main({
             aria-label="Редактировать имя и информацию о себе"
             type="button"
             onClick={onEditProfile}
-          ></button>
+          />
         </div>
         <button
           className="profile__button button"
           aria-label="Добавить новую карточку места"
           type="button"
           onClick={onAddPlace}
-        ></button>
+        />
       </section>
-
       <section className="elements">
         <ul className="elements__list">{cards.map(renderCard)}</ul>
       </section>

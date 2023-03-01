@@ -29,7 +29,7 @@ function Card({ card, onCardClick, onCardLike, onCardDelete }) {
           aria-label="Удалить карточку"
           type="button"
           onClick={handleCardDelet}
-        ></button>
+        />
       )}
       <img
         className="element__image"
@@ -45,7 +45,7 @@ function Card({ card, onCardClick, onCardLike, onCardDelete }) {
             type="button"
             aria-label="Нравится"
             onClick={handleCardLike}
-          ></button>
+          />
           <span className="element__like-quantity">{card.likes.length}</span>
         </div>
       </div>

@@ -1,39 +1,25 @@
-import Header from "./Header";
 import Main from "./Main";
+import Header from "./Header";
 import Footer from "./Footer";
-import ImagePopup from "./ImagePopup";
-import EditProfilePopup from "./EditProfilePopup";
-import EditAvatarPopup from "./EditAvatarPopup";
-import AddPlacePopup from "./AddPlacePopup";
 import api from "../utils/Api";
+import ImagePopup from "./ImagePopup";
+import AddPlacePopup from "./AddPlacePopup";
+import EditAvatarPopup from "./EditAvatarPopup";
+import EditProfilePopup from "./EditProfilePopup";
 import { useState, useEffect } from "react";
 import { CurrentUserContext } from "../context/CurrentUserContext.js";
 
 function App() {
   const [cards, setCards] = useState([]);
-  const [currentUser, setCurrentUser] = useState([]);
+  const [currentUser, setCurrentUser] = useState({});
   const [selectedCard, setSelectedCard] = useState(null);
   const [isEditPopupAvatar, setEditPopupAvatar] = useState(false);
   const [isEditPopupProfile, setEditPopupProfile] = useState(false);
   const [isEditPopupAddPlace, setEditPopupAddPlace] = useState(false);
 
   useEffect(() => {
-    document.title = "Project Mesto-React";
-  }, []);
-
-  useEffect(() => {
-    api
-      .getInitialCards()
-      .then((result) => {
-        setCards(result);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-
-    api.getUserInfo().then((data) => {
-      setCurrentUser(data);
-    });
+    api.getInitialCards().then(setCards).catch(console.error);
+    api.getUserInfo().then(setCurrentUser).catch(console.error);
   }, []);
 
   function handleEditAvatarClick() {
@@ -55,6 +41,30 @@ function App() {
     setSelectedCard(null);
   }
 
+  const isOpen =
+    isEditPopupAvatar ||
+    isEditPopupProfile ||
+    isEditPopupAddPlace ||
+    selectedCard;
+
+  useEffect(() => {
+    function closeByEscape(evt) {
+      if (evt.key === "Escape") {
+        closeAllPopups();
+      }
+    }
+    if (isOpen) {
+      document.addEventListener("keydown", closeByEscape);
+      return () => {
+        document.removeEventListener("keydown", closeByEscape);
+      };
+    }
+  }, [isOpen]);
+
+  function stopProp(e) {
+    e.stopPropagation();
+  }
+
   function handleCardClick(card) {
     setSelectedCard(card);
   }
@@ -72,24 +82,22 @@ function App() {
         .then((newCard) => {
           setNewCards(card._id, newCard);
         })
-        .catch((err) => console.error(err));
+        .catch(console.error);
     } else {
       api
         .putLikes(card._id, isLiked)
         .then((newCard) => {
           setNewCards(card._id, newCard);
         })
-        .catch((err) => console.error(err));
+        .catch(console.error);
     }
   }
 
   function handleCardDelete(card) {
     api
       .deleteCard(card._id)
-      .then(() => {
-        setCards((state) => state.filter((c) => c._id !== card._id));
-      })
-      .catch((err) => console.error(err));
+      .then(setCards((state) => state.filter((c) => c._id !== card._id)))
+      .catch(console.error);
   }
 
   function handleUpdateUser({ name, about }) {
@@ -97,8 +105,9 @@ function App() {
       .patchUserInfo({ name: name, about: about })
       .then((userData) => {
         setCurrentUser(userData);
+        closeAllPopups();
       })
-      .catch((err) => console.error(err));
+      .catch(console.error);
   }
 
   function handleUpdateAvatar({ avatar }) {
@@ -106,8 +115,9 @@ function App() {
       .patchUserAvatar({ avatar: avatar })
       .then((userData) => {
         setCurrentUser(userData);
+        closeAllPopups();
       })
-      .catch((err) => console.error(err));
+      .catch(console.error);
   }
 
   function handleUpdateCard({ name, link }) {
@@ -115,8 +125,9 @@ function App() {
       .postCard({ name: name, link: link })
       .then((newCard) => {
         setCards([newCard, ...cards]);
+        closeAllPopups();
       })
-      .catch((err) => console.error(err));
+      .catch(console.error);
   }
 
   return (
@@ -137,18 +148,25 @@ function App() {
           isOpen={isEditPopupProfile}
           onClose={closeAllPopups}
           onUpdateUser={handleUpdateUser}
+          propagation={stopProp}
         />
         <EditAvatarPopup
           isOpen={isEditPopupAvatar}
           onClose={closeAllPopups}
           onUpdateAvatar={handleUpdateAvatar}
+          propagation={stopProp}
         />
         <AddPlacePopup
           isOpen={isEditPopupAddPlace}
           onClose={closeAllPopups}
           onUpdateCard={handleUpdateCard}
+          propagation={stopProp}
         />
-        <ImagePopup card={selectedCard} onClose={closeAllPopups} />
+        <ImagePopup
+          card={selectedCard}
+          onClose={closeAllPopups}
+          propagation={stopProp}
+        />
       </div>
     </CurrentUserContext.Provider>
   );

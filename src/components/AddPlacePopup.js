@@ -1,11 +1,10 @@
-import React from 'react';
-import PopupWithForm from './PopupWithForm';
-import { useState } from 'react';
+import React from "react";
+import PopupWithForm from "./PopupWithForm";
+import { useState } from "react";
 
-function AddPlacePopup({ isOpen, onClose, onUpdateCard }) {
-
-  const [name, setName] = useState('');
-  const [link, setLink] = useState('');
+function AddPlacePopup({ isOpen, onClose, onUpdateCard, propagation }) {
+  const [name, setName] = useState("");
+  const [link, setLink] = useState("");
 
   function handleChangeName(event) {
     setName(event.target.value);
@@ -22,18 +21,17 @@ function AddPlacePopup({ isOpen, onClose, onUpdateCard }) {
       name: name,
       link: link
     })
-
-    onClose();
   }
 
   return (
     <PopupWithForm
       name="card"
       title="Новое место"
-      button="Создать"
+      buttonText="Сохранить"
       isOpen={isOpen}
       onClose={onClose}
       onSubmit={handleSubmit}
+      propagation={propagation}
     >
       <input
         className="popup__input popup__input_place_top"

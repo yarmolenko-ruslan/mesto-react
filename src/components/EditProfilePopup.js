@@ -3,10 +3,16 @@ import PopupWithForm from "./PopupWithForm";
 import { useState } from "react";
 import { CurrentUserContext } from "../context/CurrentUserContext.js";
 
-function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
+function EditProfilePopup({ isOpen, onClose, onUpdateUser, propagation }) {
   const currentUser = React.useContext(CurrentUserContext);
+
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
+
+  React.useEffect(() => {
+    setName(currentUser.name);
+    setDescription(currentUser.about);
+  }, [currentUser, isOpen]);
 
   function hendleChangeName(event) {
     setName(event.target.value);
@@ -16,11 +22,6 @@ function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
     setDescription(event.target.value);
   }
 
-  React.useEffect(() => {
-    setName(currentUser.name);
-    setDescription(currentUser.about);
-  }, [currentUser]);
-
   function handleSubmit(event) {
     event.preventDefault();
 
@@ -28,23 +29,22 @@ function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
       name: name,
       about: description,
     });
-
-    onClose();
   }
 
   return (
     <PopupWithForm
       name="profile"
       title="Редактировать профиль"
-      button="Сохранить"
+      buttonText="Сохранить"
       isOpen={isOpen}
       onClose={onClose}
       onSubmit={handleSubmit}
+      propagation={propagation}
     >
       <input
         className="popup__input popup__input_place_top"
         name="userName"
-        value={name}
+        value={name || ""}
         onChange={hendleChangeName}
         placeholder="Имя"
         minLength={2}
@@ -59,7 +59,7 @@ function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
       <input
         className="popup__input popup__input_place_bottom"
         name="userAbout"
-        value={description}
+        value={description || ""}
         onChange={handleChangeDescription}
         placeholder="Род занятия"
         minLength={2}
